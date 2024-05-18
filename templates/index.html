@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <title>Translator</title>
+    
+    <style>
+        body {
+            background-color: #263238; /* Dark blue-grey background */
+            color: #FFB74D; /* Orange text color */
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #container {
+            text-align: center;
+            border: 1px solid #FFB74D;
+            padding: 20px;
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+        select, textarea, button {
+            margin-top: 10px;
+            border-radius: 5px; /* Rounded corners for inputs */
+            border: 1px solid #FFB74D;
+            background-color: #37474F; /* Lighter blue-grey for inputs */
+            color: #FFB74D;
+            padding: 10px;
+            width: 300px; /* Fixed width for all input elements */
+        }
+        button {
+            cursor: pointer;
+            background-color: #FFB74D; /* Orange button */
+            color: #263238; /* Dark blue-grey text */
+        }
+        .flex-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .flex-container > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+
+    </head>
+
+    <body>
+        <div id="container">
+            <h1>Simple Translator</h1>
+            <div class="flex-container">
+                <div>
+                    <label for="source-lang">Source Language:</label>
+                    <select id="source-lang">
+                        <option value="English">English</option>
+                        <option value="French">French</option>
+                        <option value="German">German</option>
+                    </select>
+                    <textarea id="input-text" rows="4" placeholder="Enter text here..."></textarea>
+                </div>
+    
+                <div>
+                    <label for="target-lang">Target Language:</label>
+                    <select id="target-lang">
+                        <option value="English">English</option>
+                        <option value="French">French</option>
+                        <option value="German">German</option>
+                    </select>
+                    <textarea id="output-text" rows="4" placeholder="Translation will appear here..." readonly></textarea>
+                </div>
+            </div>
+            <button onclick="translateText()"><b>Translate</b></button>
+        </div>
+
+
+
+        <script>
+            async function translateText() {
+                const srcLang = document.getElementById('source-lang').value;
+                const tgtLang = document.getElementById('target-lang').value;
+                const text = document.getElementById('input-text').value;
+                
+                const response = await fetch('/translate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'text': text,
+                        'src_lang': srcLang.toLowerCase(),
+                        'tgt_lang': tgtLang.toLowerCase()
+                    })
+                });
+                
+                const data = await response.json();
+                document.getElementById('output-text').value = data.translated_text;
+            }
+        </script>
+
+
+
+
+    </body>
