@@ -3,6 +3,7 @@ import torch
 from transformers import MarianMTModel, MarianTokenizer
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
+
 # Load model and tokenizer
 languages = {
         "English": "en",
