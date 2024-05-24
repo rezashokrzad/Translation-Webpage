@@ -57,9 +57,9 @@
                 <div>
                     <label for="source-lang">Source Language:</label>
                     <select id="source-lang">
-                        <option value="English">English</option>
-                        <option value="French">French</option>
-                        <option value="German">German</option>
+                        <option value="en">English</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
                     </select>
                     <textarea id="input-text" rows="4" placeholder="Enter text here..."></textarea>
                 </div>
@@ -67,9 +67,9 @@
                 <div>
                     <label for="target-lang">Target Language:</label>
                     <select id="target-lang">
-                        <option value="English">English</option>
-                        <option value="French">French</option>
-                        <option value="German">German</option>
+                        <option value="en">English</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
                     </select>
                     <textarea id="output-text" rows="4" placeholder="Translation will appear here..." readonly></textarea>
                 </div>
@@ -77,14 +77,17 @@
             <button onclick="translateText()"><b>Translate</b></button>
         </div>
 
-
-
         <script>
             async function translateText() {
                 const srcLang = document.getElementById('source-lang').value;
                 const tgtLang = document.getElementById('target-lang').value;
                 const text = document.getElementById('input-text').value;
                 
+                if (srcLang === tgtLang) {
+                    alert("Source and target languages are the same. Please select different languages.");
+                    return;
+                }
+        
                 const response = await fetch('/translate', {
                     method: 'POST',
                     headers: {
@@ -92,8 +95,8 @@
                     },
                     body: JSON.stringify({
                         'text': text,
-                        'src_lang': srcLang.toLowerCase(),
-                        'tgt_lang': tgtLang.toLowerCase()
+                        'src_lang': srcLang,
+                        'tgt_lang': tgtLang
                     })
                 });
                 
@@ -101,8 +104,5 @@
                 document.getElementById('output-text').value = data.translated_text;
             }
         </script>
-
-
-
-
     </body>
+</html>
